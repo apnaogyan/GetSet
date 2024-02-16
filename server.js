@@ -1,10 +1,12 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 
 const app = express();
 const port = 3000; // You can use any port you prefer
 
 app.use(bodyParser.json());
+app.use(cookieParser());
 
 // Dummy function for AI doodle generation (replace with actual AI integration)
 function generateAIDoodle() {
@@ -19,6 +21,10 @@ function generateAIDoodle() {
 
 app.post('/generate-ai-doodle', async (req, res) => {
     try {
+        // Check if a user ID cookie is present
+        const userId = req.cookies.userId || generateUserId();
+        res.cookie('userId', userId, { maxAge: 900000, httpOnly: true });
+
         const doodleUrl = await generateAIDoodle();
         res.json({ success: true, doodleUrl });
     } catch (error) {
@@ -26,6 +32,11 @@ app.post('/generate-ai-doodle', async (req, res) => {
         res.status(500).json({ success: false, error: 'Internal Server Error' });
     }
 });
+
+function generateUserId() {
+    // Generate a random user ID (replace with a more robust implementation if needed)
+    return Math.random().toString(36).substring(7);
+}
 
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
