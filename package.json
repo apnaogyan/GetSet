@@ -1,0 +1,12 @@
+{
+  "name": "doodle-ai-server",
+  "version": "1.0.0",
+  "description": "Backend server for On Comeback Ages Doodle AI",
+  "main": "server.js",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "scripts": {
+    "start": "node server.js"
+  }
+}
